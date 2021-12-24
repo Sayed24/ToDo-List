@@ -1,5 +1,6 @@
 import './App.css';
 import { useState } from 'react';
+import Header from './Components/Header';
 
 function App() {
 
@@ -26,6 +27,8 @@ function App() {
       {tasks.map(task => (
         <h2>{task}</h2>
       ))}
+
+      <Header />
     </>
   );
 }
