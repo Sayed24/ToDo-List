@@ -1,8 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components';
 import TodoItem from './TodoItem';
 
 const TodoList = () => {
+
+    const [todo, setTodo] = useState('');
+    const [todos, setTodos] = useState([]);
+
+    const addButtonHandler = () => {
+        console.log('addButtonHandler');
+        console.log(todo);
+        setTodos([todo, ...todos]);
+        console.log(todos);
+        setTodo('');
+    }
+
+
     return (
         <Wrapper>
             <TodoCatagoryHeader>
@@ -10,10 +23,12 @@ const TodoList = () => {
                     <i className={'fas fa-user'} />
                 </CatagoryIcon>
                 <Title>Personal</Title>
-                <TodoInput />
-                <AddTodo className='fas fa-plus' />
+                <TodoInput value={todo} onChange={e => setTodo(e.target.value)} />
+                <AddTodo className='fas fa-plus' onClick={addButtonHandler} />
             </TodoCatagoryHeader>
-            <TodoItem />
+            {todos.map((todo, index) => (
+                <TodoItem key={index} todo={todo} />
+            ))}
         </Wrapper>
     )
 }
