@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import './App.css';
 import Header from './Components/Header';
+import TodoItem from './Components/TodoItem';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
             <Title>Dashboard</Title>
             <Greeting>Good morning, SayedRahim Sadat</Greeting>
             {[<h2>Cooking</h2>, <h2>Reading</h2>]}
+            <TodoItem />
           </TodoContent>
         </MainContent>
       </Main>
