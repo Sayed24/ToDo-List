@@ -16,16 +16,19 @@ const TodoList = () => {
     const addButtonHandler = () => {
         console.log('addButtonHandler');
         console.log(todo);
-        setTodos([
-            {
-                id: todos.length,
-                title: todo,
-                completed: false,
-            },
-            ...todos,
-        ]);
-        console.log(todos);
-        setTodo('');
+
+        if (todo.length > 0) {
+            setTodos([
+                {
+                    id: todos.length,
+                    title: todo,
+                    completed: false,
+                },
+                ...todos,
+            ]);
+            console.log(todos);
+            setTodo('');
+        }
     }
 
 
