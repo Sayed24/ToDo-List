@@ -19,12 +19,20 @@ const TodoItem = ({ todo, todos, setTodos }) => {
     const saveTodo = () => {
         const currentTodoId = todo.id
         setTodos(todos.map(todo => todo.id === currentTodoId ? { ...todo, title: editedTodo } : todo))
+        console.log(todos)
+    }
+
+    const completeTodo = () => {
+        const currentTodoId = todo.id
+        setTodos(
+            todos.map(todo => todo.id === currentTodoId ? { ...todo, completed: !todo.completed } : todo)
+        )
     }
 
     return (
         <TodoListItem>
-            <Checkbox className='far fa-circle' />
-            <input value={editedTodo} onChange={e => setEditedTodo(e.target.value)} />
+            <Checkbox className={todo.completed ? 'far fa-check-circle' : 'far fa-circle'} onClick={completeTodo} />
+            <input style={{ textDecoration: todo.completed ? 'line-through' : 'none' }} value={editedTodo} onChange={e => setEditedTodo(e.target.value)} />
             <SaveTodo className='fas fa-check' onClick={saveTodo} />
             <DeleteTodo className='fas fa-trash-alt' onClick={deleteTask} />
         </TodoListItem>
