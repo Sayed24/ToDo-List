@@ -12,7 +12,7 @@ const TodoItem = ({ todo, todos, setTodos }) => {
     const deleteTask = () => {
         console.log(todo.id, todo.title);
         const currentTodoId = todo.id;
-        setTodos(todos.filter(todo => todo.id != currentTodoId))
+        setTodos(todos.filter(todo => todo.id !== currentTodoId))
         console.log(todos);
     }
 
@@ -33,7 +33,7 @@ const TodoItem = ({ todo, todos, setTodos }) => {
         <TodoListItem>
             <Checkbox className={todo.completed ? 'far fa-check-circle' : 'far fa-circle'} onClick={completeTodo} />
             <input style={{ textDecoration: todo.completed ? 'line-through' : 'none' }} value={editedTodo} onChange={e => setEditedTodo(e.target.value)} />
-            {todo.title != editedTodo && (<SaveTodo className='fas fa-check' onClick={saveTodo} />)}
+            {todo.title !== editedTodo && (<SaveTodo className='fas fa-check' onClick={saveTodo} />)}
             <DeleteTodo className='fas fa-trash-alt' onClick={deleteTask} />
         </TodoListItem>
 

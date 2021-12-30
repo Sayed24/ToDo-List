@@ -1,14 +1,19 @@
 import styled from 'styled-components';
 import './App.css';
 import Header from './Components/Header';
+import Sidebar from './Components/Sidebar';
 import TodoList from './Components/TodoList';
+import { useState } from 'react';
 
 function App() {
+  const [sideBarToggle, setsideBarToggle] = useState(true);
+
   return (
     <Wrapper>
       <Header />
       <Main>
-        <MainContent style={{ width: '100vw' }}>
+        <Sidebar sideBarToggle={sideBarToggle} />
+        <MainContent style={{ width: `cal(100vw - (${sideBarToggle ? '300px' : '70px'}))` }}>
           <TodoContent>
             <Title>Dashboard</Title>
             <Greeting>Good Morning, SayedRahim Sadat</Greeting>
