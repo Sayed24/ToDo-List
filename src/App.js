@@ -6,7 +6,7 @@ import TodoList from './Components/TodoList';
 import { useState } from 'react';
 
 function App() {
-  const [sideBarToggle, setsideBarToggle] = useState(true);
+  const [sideBarToggle, setSideBarToggle] = useState(true);
   const todoList = [
     {
       name: 'Personal',
@@ -27,13 +27,16 @@ function App() {
 
   return (
     <Wrapper>
-      <Header />
+      <Header
+        sideBarToggle={sideBarToggle}
+        setSideBarToggle={setSideBarToggle}
+      />
       <Main>
         <Sidebar sideBarToggle={sideBarToggle} todoList={todoList} />
-        <MainContent style={{ width: `cal(100vw - (${sideBarToggle ? '300px' : '70px'}))` }}>
+        <MainContent style={{ width: `calc(100vw - (${sideBarToggle ? '300px' : '70px'}))` }}>
           <TodoContent>
             <Title>Dashboard</Title>
-            <Greeting>Good Morning, SayedRahim Sadat</Greeting>
+            <Greeting>Good Morning, SayedRahim</Greeting>
             <TodoList />
           </TodoContent>
         </MainContent>
