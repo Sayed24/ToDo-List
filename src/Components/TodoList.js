@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import TodoItem from './TodoItem';
 
@@ -8,42 +8,99 @@ import TodoItem from './TodoItem';
 //     completed: false
 // }
 
-const TodoList = () => {
+const TodoList = ({ name, color, icon }) => {
 
     const [todo, setTodo] = useState('');
     const [todos, setTodos] = useState([]);
 
-    const addButtonHandler = () => {
-        console.log('addButtonHandler');
-        console.log(todo);
+    const baseUrl = `https://api.airtable.com/v0/appe6S2Q3Uw0QMpdT/${name}`
 
-        if (todo.length > 0) {
-            setTodos([
-                {
-                    id: todos.length,
-                    title: todo,
-                    completed: false,
+    const getTodos = async () => {
+        try {
+            const todoData = await fetch(baseUrl, {
+                method: 'get',
+                headers: {
+                    Authorization: 'Bearer keySPPdJVd4xYukz4',
                 },
-                ...todos,
-            ]);
-            console.log(todos);
-            setTodo('');
+            })
+
+            const todoJson = await todoData.json()
+            setTodos(todoJson.records)
+        } catch (error) {
+            console.log(error)
         }
+    }
+
+    console.log(todos)
+
+    useEffect(() => {
+        getTodos()
+    }, [todo])
+
+    const addButtonHandler = async () => {
+        try {
+            await fetch(baseUrl, {
+                method: 'post',
+                headers: {
+                    Authorization: 'Bearer keySPPdJVd4xYukz4',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    records: [
+                        {
+                            fields: {
+                                Title: "Take out the trash",
+                                Completed: false
+                            },
+                        },
+                    ]
+                }),
+            })
+            setTodo('')
+        } catch (error) {
+            console.log(error)
+        }
+
+
+
+
+        // console.log('addButtonHandler');
+        // console.log(todo);
+
+        // if (todo.length > 0) {
+        //     setTodos([
+        //         {
+        //             id: todos.length,
+        //             title: todo,
+        //             completed: false,
+        //         },
+        //         ...todos,
+        //     ]);
+        //     console.log(todos);
+        //     setTodo('');
+        // }
     }
 
 
     return (
         <Wrapper>
             <TodoCatagoryHeader>
-                <CatagoryIcon style={{ background: '#fd76a1' }}>
-                    <i className={'fas fa-user'} />
+                <CatagoryIcon style={{ background: color }}>
+                    <i className={icon} />
                 </CatagoryIcon>
-                <Title>Personal</Title>
+                <Title>{name}</Title>
                 <TodoInput value={todo} onChange={e => setTodo(e.target.value)} />
                 <AddTodo className='fas fa-plus' onClick={addButtonHandler} />
             </TodoCatagoryHeader>
             {todos.map((todo, index) => (
-                <TodoItem key={index} todo={todo} todos={todos} setTodos={setTodos} />
+                <TodoItem
+                    key={index}
+                    todo={todo}
+                    color={color}
+                    baseUrl={baseUrl}
+                    name={name}
+                    getTodos={getTodos}
+                />
             ))}
         </Wrapper>
     )

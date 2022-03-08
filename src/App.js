@@ -37,7 +37,14 @@ function App() {
           <TodoContent>
             <Title>Dashboard</Title>
             <Greeting>Good Morning, SayedRahim</Greeting>
-            <TodoList />
+            {todoList.map(category => (
+              <TodoList
+                key={category.name}
+                name={category.name}
+                color={category.color}
+                icon={category.icon}
+              />
+            ))}
           </TodoContent>
         </MainContent>
       </Main>
