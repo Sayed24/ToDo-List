@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import TodoItem from './TodoItem';
 import { db } from '../firebase';
-import { collection, orderBy, onSnapshot, query, QuerySnapshot } from 'firebase/firestore';
+import { collection, orderBy, onSnapshot, query, addDoc, serverTimestamp, } from 'firebase/firestore';
 
 const TodoList = ({ name, color, icon }) => {
     const [todo, setTodo] = useState('');
@@ -15,6 +15,7 @@ const TodoList = ({ name, color, icon }) => {
             collection(db, 'todoCategories', name, 'todos'),
             orderBy('createdAt', 'desc'),
         )
+
         const unsub = onSnapshot(todoListQuery, QuerySnapshot => {
             const todoItems = []
 
@@ -30,7 +31,17 @@ const TodoList = ({ name, color, icon }) => {
         return unsub
     }, [])
 
-    const addButtonHandler = async () => { }
+    const addButtonHandler = async () => {
+        const collectionRef = collection(db, 'todoCategories', name, 'todos')
+
+        await addDoc(collectionRef, {
+            title: todo,
+            completed: false,
+            createdAt: serverTimestamp(),
+        })
+
+        setTodo('')
+    }
 
 
     return (

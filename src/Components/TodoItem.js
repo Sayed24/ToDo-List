@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
+import { db } from '../firebase';
+import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 
-const TodoItem = ({ todo, color, baseUrl, getTodos, name }) => {
+const TodoItem = ({ todo, color, name }) => {
 
     const [editedTodo, setEditedTodo] = useState(todo.title);
 
@@ -9,11 +11,23 @@ const TodoItem = ({ todo, color, baseUrl, getTodos, name }) => {
         setEditedTodo(todo.title)
     }, [todo])
 
-    const deleteTask = async () => { }
+    // const docRef = doc(db, 'todoCategories', name, 'todos', todo.id)
 
-    const saveTodo = async () => { }
+    const deleteTask = async () => {
+        // await deleteDoc(docRef)
+    }
 
-    const completeTodo = async () => { }
+    const saveTodo = async () => {
+        // await updateDoc(docRef, {
+        //     title: editedTodo,
+        // })
+    }
+
+    const completeTodo = async () => {
+        // await updateDoc(docRef, {
+        //     completed: !todo.completed,
+        // })
+    }
 
     return (
         <TodoListItem>
