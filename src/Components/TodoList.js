@@ -1,85 +1,36 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import TodoItem from './TodoItem';
-
-// {
-//     id: 1,
-//     title: 'cleaning',
-//     completed: false
-// }
+import { db } from '../firebase';
+import { collection, orderBy, onSnapshot, query, QuerySnapshot } from 'firebase/firestore';
 
 const TodoList = ({ name, color, icon }) => {
-
     const [todo, setTodo] = useState('');
     const [todos, setTodos] = useState([]);
-
-    const baseUrl = `https://api.airtable.com/v0/appe6S2Q3Uw0QMpdT/${name}`
-
-    const getTodos = async () => {
-        try {
-            const todoData = await fetch(baseUrl, {
-                method: 'get',
-                headers: {
-                    Authorization: 'Bearer keySPPdJVd4xYukz4',
-                },
-            })
-
-            const todoJson = await todoData.json()
-            setTodos(todoJson.records)
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     console.log(todos)
 
     useEffect(() => {
-        getTodos()
-    }, [todo])
+        const todoListQuery = query(
+            collection(db, 'todoCategories', name, 'todos'),
+            orderBy('createdAt', 'desc'),
+        )
+        const unsub = onSnapshot(todoListQuery, QuerySnapshot => {
+            const todoItems = []
 
-    const addButtonHandler = async () => {
-        try {
-            await fetch(baseUrl, {
-                method: 'post',
-                headers: {
-                    Authorization: 'Bearer keySPPdJVd4xYukz4',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    records: [
-                        {
-                            fields: {
-                                Title: "Take out the trash",
-                                Completed: false
-                            },
-                        },
-                    ]
-                }),
+            QuerySnapshot.forEach(doc => {
+                todoItems.push({
+                    ...doc.data(),
+                    id: doc.id,
+                })
             })
-            setTodo('')
-        } catch (error) {
-            console.log(error)
-        }
 
+            setTodos(todoItems)
+        })
+        return unsub
+    }, [])
 
-
-
-        // console.log('addButtonHandler');
-        // console.log(todo);
-
-        // if (todo.length > 0) {
-        //     setTodos([
-        //         {
-        //             id: todos.length,
-        //             title: todo,
-        //             completed: false,
-        //         },
-        //         ...todos,
-        //     ]);
-        //     console.log(todos);
-        //     setTodo('');
-        // }
-    }
+    const addButtonHandler = async () => { }
 
 
     return (
@@ -97,9 +48,6 @@ const TodoList = ({ name, color, icon }) => {
                     key={index}
                     todo={todo}
                     color={color}
-                    baseUrl={baseUrl}
-                    name={name}
-                    getTodos={getTodos}
                 />
             ))}
         </Wrapper>

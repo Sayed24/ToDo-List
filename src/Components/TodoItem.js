@@ -3,75 +3,23 @@ import styled from 'styled-components';
 
 const TodoItem = ({ todo, color, baseUrl, getTodos, name }) => {
 
-    const [editedTodo, setEditedTodo] = useState(todo.fields.title);
+    const [editedTodo, setEditedTodo] = useState(todo.title);
 
     useEffect(() => {
-        setEditedTodo(todo.fields.title)
+        setEditedTodo(todo.title)
     }, [todo])
 
-    const deleteTask = async () => {
-        try {
-            await fetch(`${baseUrl}/${todo.id}`, {
-                method: 'delete',
-                headers: {
-                    Authorization: 'Bearer keySPPdJVd4xYukz4',
-                    'Content-Type': 'application/json'
-                },
-            })
+    const deleteTask = async () => { }
 
-            getTodos()
-        } catch (err) {
-            console.log(err)
-        }
-    }
+    const saveTodo = async () => { }
 
-    const saveTodo = async () => {
-        try {
-            await fetch(`${baseUrl}/${todo.id}`, {
-                method: 'put',
-                Headers: {
-                    Authorization: 'Bearer keySPPdJVd4xYukz4',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    fields: {
-                        Title: editedTodo,
-                        Completed: todo.fields.completed,
-                    },
-                }),
-            })
-            getTodos()
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const completeTodo = async () => {
-        try {
-            await fetch(`${baseUrl}/${todo.id}`, {
-                method: 'put',
-                Headers: {
-                    Authorization: 'Bearer keySPPdJVd4xYukz4',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    fields: {
-                        Title: todo.fields.title,
-                        Completed: !todo.fields.completed,
-                    },
-                }),
-            })
-            getTodos()
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const completeTodo = async () => { }
 
     return (
         <TodoListItem>
-            <Checkbox className={todo.fields.completed ? 'far fa-check-circle' : 'far fa-circle'} onClick={completeTodo} style={{ color: color }} />
-            <input style={{ textDecoration: todo.fields.completed ? 'line-through' : 'none' }} value={editedTodo} onChange={e => setEditedTodo(e.target.value)} />
-            {todo.fields.title !== editedTodo && (<SaveTodo className='fas fa-check' onClick={saveTodo} />)}
+            <Checkbox className={todo.completed ? 'far fa-check-circle' : 'far fa-circle'} onClick={completeTodo} style={{ color: color }} />
+            <input style={{ textDecoration: todo.completed ? 'line-through' : 'none' }} value={editedTodo} onChange={e => setEditedTodo(e.target.value)} />
+            {todo.title !== editedTodo && (<SaveTodo className='fas fa-check' onClick={saveTodo} />)}
             <DeleteTodo className='fas fa-trash-alt' onClick={deleteTask} />
         </TodoListItem>
 
